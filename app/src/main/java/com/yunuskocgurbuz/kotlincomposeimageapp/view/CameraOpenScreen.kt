@@ -61,6 +61,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 import android.location.Geocoder
 import android.util.Log
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -71,7 +72,7 @@ import com.google.android.gms.tasks.Task
 
 @ExperimentalPermissionsApi
 @Composable
-fun CameraOpenScreen(directory: File, navController: NavController) {
+fun CameraOpenScreen(directory: File, navController: NavController, myCity: String) {
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
 
@@ -81,6 +82,7 @@ fun CameraOpenScreen(directory: File, navController: NavController) {
 
         SimpleCameraPreview(
             navController,
+            myCity,
             modifier = Modifier.fillMaxSize(),
             context = context,
             lifecycleOwner = lifecycleOwner,
@@ -121,6 +123,7 @@ fun WeatherDetail(location: String) : String? {
 @Composable
 fun SimpleCameraPreview(
     navController: NavController,
+    myCity: String,
     modifier: Modifier = Modifier,
     context: Context,
     lifecycleOwner: LifecycleOwner,
@@ -183,6 +186,7 @@ fun SimpleCameraPreview(
             IconButton(
                 onClick = {
                     Toast.makeText(context, "Back Clicked", Toast.LENGTH_SHORT).show()
+
                 }
             ) {
                 Icon(
@@ -229,7 +233,7 @@ fun SimpleCameraPreview(
             val imageViewModel: ImagesSQLiteViewModel = viewModel(
                 factory = ImagesViewModelFactory(context.applicationContext as Application)
             )
-            val weather = WeatherDetail("sofia")
+            var weather = WeatherDetail(myCity)
 
             Button(
                 onClick = {
@@ -265,7 +269,11 @@ fun SimpleCameraPreview(
                                 val imageDate: String = date.format(Date())
 
 
-                                val insertImageDate = ImagesEntity("Sofia", weather, imageDate, btmSql!!)
+                                if(weather == null){
+                                    weather = ""
+                                }
+
+                                val insertImageDate = ImagesEntity(myCity, weather, imageDate, btmSql!!)
 
 
                                 imageViewModel.addImage(insertImageDate)

@@ -12,6 +12,7 @@ import android.os.Looper
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material.*
@@ -29,6 +30,7 @@ import com.yunuskocgurbuz.kotlincomposeimageapp.view.CameraOpenScreen
 import com.yunuskocgurbuz.kotlincomposeimageapp.view.ImageDetailScreen
 import com.yunuskocgurbuz.kotlincomposeimageapp.view.ImagesListScreen
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 import java.io.File
 import java.util.*
 
@@ -63,13 +65,20 @@ class MainActivity : ComponentActivity() {
 
                     composable("camera_open_screen"){
 
-                        CameraOpenScreen(getDirectory(), navController)
+                        CameraOpenScreen(getDirectory(), navController, myCity!!)
+
+
 
                     }
 
                     composable("images_list_screen"){
 
                        ImagesListScreen(navController)
+
+                        BackHandler(true) {
+                            // Or do nothing
+                            Timber.e("Clicked back")
+                        }
 
                     }
 
@@ -112,11 +121,16 @@ class MainActivity : ComponentActivity() {
                     if(location == null){
                         NewLocationData()
                     }else{
-                        Log.d("Debug:" ,"Your Location:"+ location.longitude + "//" + location.latitude)
+
                         var geoCoder = Geocoder(this, Locale.getDefault())
-                        var Adress = geoCoder.getFromLocation(location.latitude,location.longitude,3)
-                        myCity = Adress.get(0).adminArea
-                        Log.d("Debug:" ,"Your Location:"+ myCity!!.take(5))
+                        var Adress = geoCoder.getFromLocation(location.latitude, location.longitude,3)
+                        if(myCity == null){
+                            myCity = "Van" // my sweet city :)
+                        }else{
+                            myCity = Adress.get(0).locality
+                        }
+
+                        Log.d("Debug:" ,"Your Location:"+ myCity)
 
                     }
                 }
