@@ -1,14 +1,11 @@
 package com.yunuskocgurbuz.kotlincomposeimageapp.view
 
-import android.Manifest
+
 import android.annotation.SuppressLint
-import android.app.Activity.RESULT_OK
 import android.app.Application
 import android.content.Context
-import android.content.IntentSender
 import android.graphics.Bitmap
 import android.graphics.ImageDecoder
-import android.location.Address
 import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
@@ -16,10 +13,8 @@ import android.widget.Toast
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -32,14 +27,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.scale
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -47,7 +39,6 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import com.google.accompanist.permissions.rememberPermissionState
 import com.yunuskocgurbuz.kotlincomposeimageapp.R
 import com.yunuskocgurbuz.kotlincomposeimageapp.entity.ImagesEntity
 import com.yunuskocgurbuz.kotlincomposeimageapp.model.weather.WeatherModel
@@ -59,15 +50,7 @@ import com.yunuskocgurbuz.kotlincomposeimageapp.viewmodel.WeatherViewModel
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
-import android.location.Geocoder
-import android.util.Log
-import androidx.activity.compose.BackHandler
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.IntentSenderRequest
-import androidx.activity.result.contract.ActivityResultContracts
-import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
-import com.google.android.gms.tasks.Task
 
 
 @ExperimentalPermissionsApi
@@ -175,27 +158,6 @@ fun SimpleCameraPreview(
                 previewView
             }
         )
-
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(15.dp)
-                .align(Alignment.TopStart)
-        ) {
-            IconButton(
-                onClick = {
-                    Toast.makeText(context, "Back Clicked", Toast.LENGTH_SHORT).show()
-
-                }
-            ) {
-                Icon(
-                    imageVector = Icons.Filled.ArrowBack,
-                    contentDescription = "back arrow",
-                    tint = MaterialTheme.colors.surface
-                )
-            }
-        }
 
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,

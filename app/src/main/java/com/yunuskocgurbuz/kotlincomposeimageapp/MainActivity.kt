@@ -16,7 +16,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.interaction.DragInteraction
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.platform.LocalContext
@@ -33,7 +32,6 @@ import com.yunuskocgurbuz.kotlincomposeimageapp.view.CameraOpenScreen
 import com.yunuskocgurbuz.kotlincomposeimageapp.view.ImageDetailScreen
 import com.yunuskocgurbuz.kotlincomposeimageapp.view.ImagesListScreen
 import dagger.hilt.android.AndroidEntryPoint
-import timber.log.Timber
 import java.io.File
 import java.util.*
 
@@ -41,7 +39,6 @@ import java.util.*
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-    //Declaring the needed Variables
     lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     val PERMISSION_ID = 1010
     var myCity: String? = null
@@ -72,6 +69,7 @@ class MainActivity : ComponentActivity() {
                     composable("images_list_screen"){
 
                        ImagesListScreen(navController)
+
                         val activity = (LocalContext.current as? Activity)
                         BackHandler(true) {
                             activity?.finish()

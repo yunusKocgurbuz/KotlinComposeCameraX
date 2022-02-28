@@ -3,15 +3,13 @@ package com.yunuskocgurbuz.kotlincomposeimageapp.view
 
 import android.Manifest
 import android.app.Application
+import android.graphics.Paint
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
@@ -22,9 +20,9 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
@@ -50,7 +48,7 @@ fun ImagesListScreen(
             TopAppBar(
                 title = {
                     Text(
-                        text = "CameraX Tumbe"
+                        text = "CameraX Tumba"
                     )
                 },
                 backgroundColor = Color.White
@@ -88,7 +86,6 @@ fun CallImages(navController: NavController) {
 
     val getAllImages = imageViewModel.readAllImages.observeAsState(listOf()).value
 
-
     Spacer(modifier = Modifier.padding(5.dp))
 
         Column(
@@ -96,6 +93,13 @@ fun CallImages(navController: NavController) {
                 .verticalScroll(rememberScrollState())
                 .padding(2.dp)
         ) {
+
+            if(getAllImages.isEmpty()){
+                Text(text = "You haven't shared any photos yet", textAlign = TextAlign.Center,
+                    style = TextStyle(color=Color.DarkGray, fontSize = 16.sp),
+                    modifier = Modifier.padding(10.dp).fillMaxSize())
+            }
+
             StaggeredVerticalGrid(
                 numColumns = 2, //put the how many column you want
                 modifier = Modifier.padding(2.dp)
@@ -119,9 +123,9 @@ fun ImageRow(image: ImagesEntity, navController: NavController){
                 .padding(5.dp)
                 .clickable {
 
-                           navController.navigate(
-                               "image_detail_screen/${image.uuId}"
-                           )
+                    navController.navigate(
+                        "image_detail_screen/${image.uuId}"
+                    )
 
 
                 },
