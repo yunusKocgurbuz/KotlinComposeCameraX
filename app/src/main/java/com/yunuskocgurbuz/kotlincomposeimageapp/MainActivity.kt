@@ -2,6 +2,7 @@ package com.yunuskocgurbuz.kotlincomposeimageapp
 
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageManager
 import android.location.Geocoder
@@ -15,8 +16,10 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.interaction.DragInteraction
 import androidx.compose.material.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.platform.LocalContext
 import androidx.core.app.ActivityCompat
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -40,7 +43,6 @@ class MainActivity : ComponentActivity() {
 
     //Declaring the needed Variables
     lateinit var fusedLocationProviderClient: FusedLocationProviderClient
-    lateinit var locationRequest: LocationRequest
     val PERMISSION_ID = 1010
     var myCity: String? = null
 
@@ -54,8 +56,6 @@ class MainActivity : ComponentActivity() {
             RequestPermission()
             getLastLocation()
 
-        println("mycity: " + myCity)
-
 
         setContent {
             KotlinComposeImageAppTheme {
@@ -67,17 +67,14 @@ class MainActivity : ComponentActivity() {
 
                         CameraOpenScreen(getDirectory(), navController, myCity!!)
 
-
-
                     }
 
                     composable("images_list_screen"){
 
                        ImagesListScreen(navController)
-
+                        val activity = (LocalContext.current as? Activity)
                         BackHandler(true) {
-                            // Or do nothing
-                            Timber.e("Clicked back")
+                            activity?.finish()
                         }
 
                     }
@@ -160,15 +157,12 @@ class MainActivity : ComponentActivity() {
     private val locationCallback = object : LocationCallback(){
         override fun onLocationResult(locationResult: LocationResult) {
             var lastLocation: Location = locationResult.lastLocation
-            Log.d("Debug:","your last last location: "+ lastLocation.longitude.toString())
+            Log.d("Debug:","your last location: "+ lastLocation.longitude.toString())
 
         }
     }
 
     private fun CheckPermission():Boolean{
-        //this function will return a boolean
-        //true: if we have permission
-        //false if not
         if(
             ActivityCompat.checkSelfPermission(this,android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED ||
             ActivityCompat.checkSelfPermission(this,android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
@@ -181,7 +175,6 @@ class MainActivity : ComponentActivity() {
     }
 
     fun RequestPermission(){
-        //this function will allows us to tell the user to requesut the necessary permsiion if they are not garented
         ActivityCompat.requestPermissions(
             this,
             arrayOf(android.Manifest.permission.ACCESS_COARSE_LOCATION,android.Manifest.permission.ACCESS_FINE_LOCATION),
@@ -190,8 +183,7 @@ class MainActivity : ComponentActivity() {
     }
 
     fun isLocationEnabled():Boolean{
-        //this function will return to us the state of the location service
-        //if the gps or the network provider is enabled then it will return true otherwise it will return false
+
         var locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
         return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
     }
