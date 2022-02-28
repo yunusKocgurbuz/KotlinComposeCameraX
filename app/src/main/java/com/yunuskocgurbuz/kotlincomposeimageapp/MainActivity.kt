@@ -119,8 +119,9 @@ class MainActivity : ComponentActivity() {
 
                         var geoCoder = Geocoder(this, Locale.getDefault())
                         var Adress = geoCoder.getFromLocation(location.latitude, location.longitude,3)
+                        myCity = Adress.get(0).locality
                         if(myCity == null){
-                            myCity = "Van" // my sweet city :)
+                            myCity = "Sofia" // my sweet city :)
                         }else{
                             myCity = Adress.get(0).locality
                         }
@@ -175,7 +176,7 @@ class MainActivity : ComponentActivity() {
     fun RequestPermission(){
         ActivityCompat.requestPermissions(
             this,
-            arrayOf(android.Manifest.permission.ACCESS_COARSE_LOCATION,android.Manifest.permission.ACCESS_FINE_LOCATION),
+            arrayOf(android.Manifest.permission.ACCESS_COARSE_LOCATION,android.Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.CAMERA),
             PERMISSION_ID
         )
     }
@@ -196,6 +197,8 @@ class MainActivity : ComponentActivity() {
         if(requestCode == PERMISSION_ID){
             if(grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED){
                 Log.d("Debug:","You have the Permission")
+            }else{
+                getLastLocation()
             }
         }
     }

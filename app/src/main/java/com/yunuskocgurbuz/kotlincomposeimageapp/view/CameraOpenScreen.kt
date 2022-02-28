@@ -1,6 +1,7 @@
 package com.yunuskocgurbuz.kotlincomposeimageapp.view
 
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
@@ -39,6 +40,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.rememberPermissionState
 import com.yunuskocgurbuz.kotlincomposeimageapp.R
 import com.yunuskocgurbuz.kotlincomposeimageapp.entity.ImagesEntity
 import com.yunuskocgurbuz.kotlincomposeimageapp.model.weather.WeatherModel
@@ -53,6 +55,7 @@ import java.util.*
 import com.google.android.gms.location.*
 
 
+@SuppressLint("PermissionLaunchedDuringComposition")
 @ExperimentalPermissionsApi
 @Composable
 fun CameraOpenScreen(directory: File, navController: NavController, myCity: String) {
@@ -62,6 +65,8 @@ fun CameraOpenScreen(directory: File, navController: NavController, myCity: Stri
 
 
     Column() {
+
+
 
         SimpleCameraPreview(
             navController,
@@ -224,6 +229,7 @@ fun SimpleCameraPreview(
                                             ImageDecoder.decodeBitmap(source)
                                         }
                                     }
+
 
                                 var btmSql: Bitmap? = bitmap!!.scale(750,750, true)
 

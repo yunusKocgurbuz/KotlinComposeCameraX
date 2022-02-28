@@ -4,6 +4,7 @@ package com.yunuskocgurbuz.kotlincomposeimageapp.view
 import android.Manifest
 import android.app.Application
 import android.graphics.Paint
+import android.widget.Toast
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -40,8 +41,7 @@ import com.yunuskocgurbuz.kotlincomposeimageapp.viewmodel.ImagesViewModelFactory
 fun ImagesListScreen(
     navController: NavController
 ) {
-    val cameraPermissionState = rememberPermissionState(
-        permission = Manifest.permission.CAMERA)
+
     val scaffoldState = rememberScaffoldState()
     Scaffold(
         topBar = {
@@ -58,8 +58,8 @@ fun ImagesListScreen(
             FloatingActionButton(
                 onClick = {
 
-                    cameraPermissionState.launchPermissionRequest()
-                    navController.navigate("camera_open_screen")
+                        navController.navigate("camera_open_screen")
+
                 }
             ) {
                 Icon(imageVector = Icons.Default.Add, contentDescription = "Add image")
